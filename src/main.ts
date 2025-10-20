@@ -14,8 +14,12 @@ async function bootstrap() {
     }),
   );
 
-  // CORS 설정
-  app.enableCors();
+  // CORS 설정 - 전체 허용
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
