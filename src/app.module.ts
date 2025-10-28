@@ -13,17 +13,27 @@ import { BooksModule } from './books/books.module';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // 자동으로 테이블 생성/동기화
-        logging: true,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const dbConfig = {
+          type: 'mysql' as const,
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_DATABASE'),
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          synchronize: true,
+          logging: true,
+        };
+        console.log('DB Config:', {
+          host: dbConfig.host,
+          port: dbConfig.port,
+          username: dbConfig.username,
+          database: dbConfig.database,
+          passwordSet: !!dbConfig.password,
+        });
+        return dbConfig;
+      },
     }),
     BooksModule,
   ],
