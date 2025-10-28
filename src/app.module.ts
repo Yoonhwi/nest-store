@@ -11,29 +11,16 @@ import { BooksModule } from './books/books.module';
       isGlobal: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const dbConfig = {
-          type: 'mysql' as const,
-          host: configService.get('DB_HOST'),
-          port: configService.get('DB_PORT'),
-          username: configService.get('DB_USERNAME'),
-          password: configService.get('DB_PASSWORD'),
-          database: configService.get('DB_DATABASE'),
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true,
-          logging: true,
-        };
-        console.log('DB Config:', {
-          host: dbConfig.host,
-          port: dbConfig.port,
-          username: dbConfig.username,
-          database: dbConfig.database,
-          passwordSet: !!dbConfig.password,
-        });
-        return dbConfig;
-      },
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '3306'),
+      username: process.env.DB_USERNAME || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_DATABASE || 'store',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+      logging: true,
     }),
     BooksModule,
   ],
