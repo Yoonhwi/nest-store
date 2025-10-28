@@ -4,6 +4,17 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // Debug: 환경 변수 출력
+  console.log('=== Environment Variables ===');
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  console.log('DB_HOST:', process.env.DB_HOST);
+  console.log('DB_PORT:', process.env.DB_PORT);
+  console.log('DB_USERNAME:', process.env.DB_USERNAME);
+  console.log('DB_DATABASE:', process.env.DB_DATABASE);
+  console.log('DB_PASSWORD:', process.env.DB_PASSWORD ? '***set***' : 'NOT SET');
+  console.log('All env keys:', Object.keys(process.env).filter(k => k.startsWith('DB_') || k.startsWith('MYSQL')));
+  console.log('=============================');
+
   const app = await NestFactory.create(AppModule);
 
   // Global validation pipe
