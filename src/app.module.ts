@@ -21,7 +21,7 @@ import { BooksModule } from './books/books.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('NODE_ENV') === 'development',
+        synchronize: true, // 자동으로 테이블 생성/동기화
         logging: true,
       }),
     }),
